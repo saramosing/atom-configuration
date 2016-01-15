@@ -1,0 +1,43 @@
+"*":
+  editor:
+    invisibles: {}
+    tabLength: 4
+    fontSize: 15
+  core:
+    themes: [
+      "visual-studio-code"
+      "code-dark-syntax"
+    ]
+    autoHideMenuBar: true
+    disabledPackages: [
+      "file-icons"
+    ]
+  "exception-reporting":
+    userId: "d50ec7ae-2655-50e2-5e52-919f608b4a45"
+  welcome:
+    showOnStartup: false
+  minimap:
+    plugins:
+      "highlight-selected": false
+      pigments: true
+      "minimap-autohide": true
+      bookmarks: false
+      "minimap-hide": true
+  "tree-view": {}
+  "atom-beautify":
+    _analyticsUserId: "e23efaa1-360e-4f06-9f57-62e33b68dc81"
+  "markdown-preview":
+    useGitHubStyle: true
+  "save-session":
+    dataSaveFolder: "C:\\Users\\tsaramosing\\.atom\\packages\\save-session\\projects"
+  "highlight-line": {}
+  "highlight-selected":
+    highlightBackground: true
+  "tree-view-background":
+    imagePaths: [
+      "file:///C:/Users/tsaramosing/Documents/atom_rocket.png"
+    ]
+  "tool-bar":
+    position: "Left"
+  "tool-bar-almighty": {}
+  "flex-tool-bar": {}
