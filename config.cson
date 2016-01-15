@@ -2,7 +2,7 @@
   editor:
     invisibles: {}
     tabLength: 4
-    fontSize: 15
+    fontSize: 16
   core:
     themes: [
       "visual-studio-code"

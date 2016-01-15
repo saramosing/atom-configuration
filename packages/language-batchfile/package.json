@@ -1,0 +1,34 @@
+{
+  "name": "language-batchfile",
+  "version": "0.4.0",
+  "description": "Windows batch file language support in Atom",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmims/language-batchfile.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {},
+  "readme": "# Windows batch file language support in Atom\n\nAdds syntax highlighting to batch files in Atom.\n\n![batchfile](https://cloud.githubusercontent.com/assets/534908/3602089/b31651d6-0d07-11e4-8e34-41adab71f478.png)\n\n_Atom Dark with Base16 Tomorrow Dark theme_\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/mmims/language-batchfile/issues"
+  },
+  "homepage": "https://github.com/mmims/language-batchfile#readme",
+  "_id": "language-batchfile@0.4.0",
+  "_shasum": "131ce67de5dfc4ee3f6c9998daef54676c3bc643",
+  "_resolved": "file:..\\d-1151023-11068-p5dobq\\package.tgz",
+  "_from": "..\\d-1151023-11068-p5dobq\\package.tgz",
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [],
+    "extensions": {
+      ".json": [
+        "package.json"
+      ]
+    },
+    "folders": []
+  }
+}

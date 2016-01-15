@@ -1,0 +1,39 @@
+{
+  "name": "code-dark-syntax",
+  "theme": "syntax",
+  "version": "0.4.0",
+  "description": "A dark syntax theme based on Visual Studio Code, with some tweaks",
+  "keywords": [
+    "syntax",
+    "theme",
+    "code"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alefragnani/atom-code-dark-syntax.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "readme": "# Code Dark Syntax theme\n\nA dark syntax theme inspired on **Visual Studio Code**, with some tweaks.\n\n## Supported Languages\n\nI tested it with a few languages, and intend to add more:\n\n* Pascal\n* Java\n* Coffeescript\n* JavaScript\n* Markdown\n* Python\n* LESS\n* JSON\n\n## Screenshots\n\n#### Pascal\n\n![Pascal](https://raw.githubusercontent.com/alefragnani/atom-code-dark-syntax/master/screenshot-pascal.png)\n\n#### Java\n\n![Pascal](https://raw.githubusercontent.com/alefragnani/atom-code-dark-syntax/master/screenshot-java.png)\n\n## License\n\n[MIT](LICENSE.md) &copy; Alessandro Fragnani\n\n---\n\n[![Paypal Donations](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=EP57F3B6FXKTU&lc=US&item_name=Alessandro%20Fragnani&item_number=atom%20plugins&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted) if you enjoy using this theme :smile:\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/alefragnani/atom-code-dark-syntax/issues"
+  },
+  "homepage": "https://github.com/alefragnani/atom-code-dark-syntax#readme",
+  "_id": "code-dark-syntax@0.4.0",
+  "_shasum": "a42fa5d8ac60c21b005725c649e6f0bcf7cd8281",
+  "_resolved": "file:..\\d-116015-27492-1sqgh7w\\package.tgz",
+  "_from": "..\\d-116015-27492-1sqgh7w\\package.tgz",
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [],
+    "extensions": {
+      ".json": [
+        "package.json"
+      ]
+    },
+    "folders": []
+  }
+}
