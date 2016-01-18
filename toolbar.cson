@@ -1,9 +1,10 @@
 [
   {
-    type: "url"
-    icon: "octoface"
-    url: "http://github.com"
-    tooltip: "Github Page"
+    type: "button"
+    icon: "share-alt-square"
+    iconset: "fa"
+    tooltip: "Toggle Tree-View"
+    callback: ["tree-view:toggle"]
   }
   {
     type: "spacer"
@@ -11,28 +12,71 @@
   {
     type: "button"
     icon: "document"
-    callback: "application:new-file"
-    tooltip: "New File"
     iconset: "ion"
-    mode: "dev"
+    tooltip: "New File"
+    callback: ["application:new-file"]
   }
   {
     type: "button"
-    icon: "columns"
+    icon: "folder"
+    iconset: "ion"
+    tooltip: "Open..."
+    callback: ["application:open-file"]
+  }
+  {
+    type: "button"
+    icon: "save"
+    iconset: "fi"
+    tooltip: "Save"
+    callback: ["core:save"]
+  }
+  {
+    type: "spacer"
+  }
+  {
+    type: "button"
+    icon: "social-github"
+    iconset: "ion"
+    tooltip: "Toggle git control"
+    callback: ["git-control:toggle"]
+  }
+  {
+    type: "url"
+    icon: "git-square"
     iconset: "fa"
-    callback: ["pane:split-right", "pane:split-right"]
+    tooltip: "Github Page - saramosing"
+    url: "http://github.com/saramosing"
   }
   {
-    type: "button"
-    icon: "circuit-board"
-    callback: "git-diff:toggle-diff-list"
-    style:
-      color: "#FA4F28"
+    type: "url"
+    icon: "octoface"
+    tooltip: "PSWGithub Page - content-pipeline"
+    url: "https://pswgithub.rds.lexmark.com/content-pipeline"
   }
   {
     type: "button"
     icon: "markdown"
-    callback: "markdown-preview:toggle"
-    disable: "!markdown"
+    tooltip: "Toggle Markdown Preview"
+    callback: ["markdown-preview:toggle"]
+    show: "Markdown"
+  }
+  {
+    type: "spacer"
+  }
+  {
+    type: "button"
+    icon: "navicon-round"
+    iconset: "ion"
+    tooltip: "Toggle Command Palette"
+    callback: ["command-palette:toggle"]
+  }
+  {
+    type: "button"
+    icon: "tools"
+    tooltip: "Atom Settings"
+    callback: ["settings-view:open"]
+  }
+  {
+    type: "spacer"
   }
 ]
