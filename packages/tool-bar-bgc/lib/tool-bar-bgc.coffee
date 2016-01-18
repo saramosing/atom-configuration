@@ -10,20 +10,25 @@ module.exports =
     @toolBar = toolBar 'bgc-tool-bar'
 
     @toolBar.addButton
-      icon: 'sitemap'
+      icon: 'share-alt-square'
       callback: 'tree-view:toggle'
       tooltip: 'Toggle Tree-View'
       iconset: 'fa'
+    @toolBar.addButton
+      icon: 'document'
+      callback: 'application:new-file'
+      tooltip: 'New File'
+      iconset: 'ion'
     @toolBar.addButton
       icon: 'folder'
       callback: 'application:open-file'
       tooltip: 'Open...'
       iconset: 'ion'
     @toolBar.addButton
-      icon: 'archive'
+      icon: 'save'
       callback: 'core:save'
       tooltip: 'Save'
-      iconset: 'ion'
+      iconset: 'fi'
 
     @toolBar.addSpacer()
     @toolBar.addSpacer()
@@ -33,20 +38,8 @@ module.exports =
       callback: 'git-control:toggle'
       tooltip: 'Toggle git control'
       iconset: 'ion'
-    @toolBar.addSpacer()
-    @toolBar.addSpacer()
 
-    @toolBar.addButton
-      icon: 'search'
-      callback: 'find-and-replace:show'
-      tooltip: 'Find in Buffer'
-      iconset: 'ion'
-    @toolBar.addButton
-      icon: 'shuffle'
-      callback: 'find-and-replace:show-replace'
-      tooltip: 'Replace in Buffer'
-      iconset: 'ion'
-
+    @toolBar.addSpacer()
     @toolBar.addSpacer()
 
     @toolBar.addButton
