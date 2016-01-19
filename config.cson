@@ -2,11 +2,10 @@
   editor:
     invisibles: {}
     tabLength: 4
-    fontSize: 16
   core:
     themes: [
-      "visual-studio-code"
-      "code-dark-syntax"
+      "one-light-ui"
+      "fizzy"
     ]
     autoHideMenuBar: true
   "exception-reporting":
