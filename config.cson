@@ -2,11 +2,11 @@
   editor:
     invisibles: {}
     tabLength: 4
-    fontSize: 13
+    fontSize: 16
   core:
     themes: [
-      "one-light-ui"
-      "fizzy"
+      "visual-studio-code"
+      "code-dark-syntax"
     ]
     autoHideMenuBar: true
   "exception-reporting":
@@ -38,4 +38,3 @@
     position: "Left"
   "tool-bar-almighty": {}
   "flex-tool-bar": {}
-  "one-light-ui": {}
