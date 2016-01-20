@@ -65,13 +65,6 @@
   }
   {
     type: "button"
-    icon: "navicon-round"
-    iconset: "ion"
-    tooltip: "Toggle Command Palette"
-    callback: ["command-palette:toggle"]
-  }
-  {
-    type: "button"
     icon: "tools"
     tooltip: "Atom Settings"
     callback: ["settings-view:open"]
