@@ -1,7 +1,7 @@
 [
   {
     type: "button"
-    icon: "share-alt-square"
+    icon: "th-list"
     iconset: "fa"
     tooltip: "Toggle Tree-View"
     callback: ["tree-view:toggle"]
@@ -65,7 +65,8 @@
   }
   {
     type: "button"
-    icon: "tools"
+    icon: "wrench"
+    iconset: "fa"
     tooltip: "Atom Settings"
     callback: ["settings-view:open"]
   }
