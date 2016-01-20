@@ -2,10 +2,11 @@
   editor:
     invisibles: {}
     tabLength: 4
+    fontSize: 15
   core:
     themes: [
-      "one-light-ui"
-      "fizzy"
+      "atom-dark-ui"
+      "slime"
     ]
     autoHideMenuBar: true
   "exception-reporting":
