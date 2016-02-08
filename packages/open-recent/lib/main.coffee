@@ -56,25 +56,35 @@ class OpenRecent
     if e.key is @db.key
       @update()
 
+  encodeEventName: (s) ->
+    s = s.replace('-', '\u2010') # HYPHEN
+    s = s.replace(':', '\u02D0') # MO­DI­FI­ER LET­TER TRIANGULAR COLON
+    return s
+
+  commandEventName: (prefix, path) ->
+    return "open-recent:#{prefix}-#{@encodeEventName(path)}"
+
   #--- Listeners
   addCommandListeners: ->
     #--- Commands
-    # open-recent:open-recent-file-#
-    for index, path of @db.get('files')
+    # open-recent:File#-path
+    for path, index in @db.get('files')
       do (path) => # Explicit closure
-        disposable = atom.commands.add "atom-workspace", "open-recent:open-recent-file-#{index}", =>
+        disposable = atom.commands.add "atom-workspace", @commandEventName("File#{index}", path), =>
           @openFile path
         @commandListenerDisposables.push disposable
 
-    # open-recent:open-recent-path-#
-    for index, path of @db.get('paths')
+    # open-recent:Dir#-path
+    for path, index in @db.get('paths')
       do (path) => # Explicit closure
-        disposable = atom.commands.add "atom-workspace", "open-recent:open-recent-path-#{index}", =>
+        disposable = atom.commands.add "atom-workspace", @commandEventName("Dir#{index}", path), =>
           @openPath path
         @commandListenerDisposables.push disposable
 
-    # open-recent:clear
-    disposable = atom.commands.add "atom-workspace", "open-recent:clear", =>
+    # open-recent:clear-all------...
+    # Add tons of --- at the end to sort this item at the bottom of the command palette.
+    # Multiple spaces are ignored inside the command palette.
+    disposable = atom.commands.add "atom-workspace", "open-recent:clear-all" + '-'.repeat(1024), =>
       @db.set('files', [])
       @db.set('paths', [])
       @update()
@@ -221,10 +231,10 @@ class OpenRecent
     # Files
     recentFiles = @db.get('files')
     if recentFiles.length
-      for index, path of recentFiles
+      for path, index in recentFiles
         menuItem = {
           label: path
-          command: "open-recent:open-recent-file-#{index}"
+          command: @commandEventName("File#{index}", path)
         }
         if path.length > 100
           menuItem.label = path.substr(-60)
@@ -235,10 +245,10 @@ class OpenRecent
     # Root Paths
     recentPaths = @db.get('paths')
     if recentPaths.length
-      for index, path of recentPaths
+      for path, index in recentPaths
         menuItem = {
           label: path
-          command: "open-recent:open-recent-path-#{index}"
+          command: @commandEventName("Dir#{index}", path)
         }
         if path.length > 100
           menuItem.label = path.substr(-60)
@@ -246,7 +256,7 @@ class OpenRecent
         submenu.push menuItem
       submenu.push { type: "separator" }
 
-    submenu.push { command: "open-recent:clear", label: "Clear List" }
+    submenu.push { command: "open-recent:clear-all" + '-'.repeat(1024), label: "Clear List" }
     return submenu
 
   updateMenu: ->

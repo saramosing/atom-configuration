@@ -2,6 +2,7 @@
   editor:
     invisibles: {}
     tabLength: 4
+    preferredLineLength: 120
   core:
     themes: [
       "zenburn-ui"

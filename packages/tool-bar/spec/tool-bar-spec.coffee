@@ -1,5 +1,17 @@
 describe 'Tool Bar package', ->
   [workspaceElement, toolBarService, toolBarAPI] = []
+  getGlyph = (elm) ->
+    window.getComputedStyle(elm, ':before')
+      .getPropertyValue('content')
+      .charCodeAt(1)
+      .toString(16)
+      .toLowerCase()
+  buildClickEvent = ({altKey, ctrlKey, shiftKey}={}) ->
+    event = new MouseEvent('click')
+    Object.defineProperty(event, 'altKey', get: -> altKey) if altKey?
+    Object.defineProperty(event, 'ctrlKey', get: -> ctrlKey) if ctrlKey?
+    Object.defineProperty(event, 'shiftKey', get: -> shiftKey) if shiftKey?
+    event
 
   beforeEach ->
     workspaceElement = atom.views.getView(atom.workspace)
@@ -18,6 +30,11 @@ describe 'Tool Bar package', ->
     it 'removes the tool bar view', ->
       atom.packages.deactivatePackage('tool-bar')
       expect(workspaceElement.querySelector('.tool-bar')).toBeNull()
+    it 'notifies on destroy', ->
+      toolBarAPI = toolBarService('specs-tool-bar')
+      toolBarAPI.onDidDestroy spy = jasmine.createSpy()
+      atom.packages.deactivatePackage('tool-bar')
+      expect(spy).toHaveBeenCalled()
 
   describe 'provides a service API', ->
     it 'for others to use', ->
@@ -36,39 +53,200 @@ describe 'Tool Bar package', ->
         toolBarAPI.addButton
           icon: 'octoface'
           callback: 'application:about'
-          tooltip: 'About Atom'
         expect(toolBar.children.length).toBe(1)
         expect(toolBar.firstChild.classList.contains('icon-octoface')).toBe(true)
-        expect(toolBar.firstChild.dataset.originalTitle).toBe('About Atom')
-      it 'using custom icon set (Ionicons)', ->
+      it 'with tooltip', ->
         toolBarAPI.addButton
-          icon: 'gear-a'
-          callback: 'application:show-settings'
-          tooltip: 'Show Settings'
-          iconset: 'ion'
+          icon: 'octoface'
+          callback: 'application:about'
+          tooltip: 'About Atom'
         expect(toolBar.children.length).toBe(1)
+        expect(toolBar.firstChild.dataset.originalTitle).toBe('About Atom')
+
+      it 'using default iconset', ->
+        jasmine.attachToDOM(toolBar)
+        toolBarAPI.addButton
+          icon: 'octoface'
+          callback: 'application:about'
+        expect(toolBar.firstChild.classList.contains('icon-octoface')).toBe(true)
+        expect(getGlyph(toolBar.firstChild)).toBe('f008')
+      it 'using Ionicons iconset', ->
+        jasmine.attachToDOM(toolBar)
+        toolBarAPI.addButton
+          icon: 'ionic'
+          callback: 'application:about'
+          iconset: 'ion'
         expect(toolBar.firstChild.classList.contains('ion')).toBe(true)
-        expect(toolBar.firstChild.classList.contains('ion-gear-a')).toBe(true)
-        expect(toolBar.firstChild.dataset.originalTitle).toBe('Show Settings')
+        expect(toolBar.firstChild.classList.contains('ion-ionic')).toBe(true)
+        expect(getGlyph(toolBar.firstChild)).toBe('f14b')
+      it 'using Font Awesome iconset', ->
+        jasmine.attachToDOM(toolBar)
+        toolBarAPI.addButton
+          icon: 'fort-awesome'
+          callback: 'application:about'
+          iconset: 'fa'
+        expect(toolBar.firstChild.classList.contains('fa')).toBe(true)
+        expect(toolBar.firstChild.classList.contains('fa-fort-awesome')).toBe(true)
+        expect(getGlyph(toolBar.firstChild)).toBe('f286')
+      it 'using Foundation iconset', ->
+        jasmine.attachToDOM(toolBar)
+        toolBarAPI.addButton
+          icon: 'foundation'
+          callback: 'application:about'
+          iconset: 'fi'
+        expect(toolBar.firstChild.classList.contains('fi')).toBe(true)
+        expect(toolBar.firstChild.classList.contains('fi-foundation')).toBe(true)
+        expect(getGlyph(toolBar.firstChild)).toBe('f152')
+      it 'using Icomoon iconset', ->
+        jasmine.attachToDOM(toolBar)
+        toolBarAPI.addButton
+          icon: 'IcoMoon'
+          callback: 'application:about'
+          iconset: 'icomoon'
+        expect(toolBar.firstChild.classList.contains('icomoon')).toBe(true)
+        expect(toolBar.firstChild.classList.contains('icomoon-IcoMoon')).toBe(true)
+        expect(getGlyph(toolBar.firstChild)).toBe('eaea')
+      it 'using Devicon iconset', ->
+        jasmine.attachToDOM(toolBar)
+        toolBarAPI.addButton
+          icon: 'atom-original'
+          callback: 'application:about'
+          iconset: 'devicon'
+        expect(toolBar.firstChild.classList.contains('devicon')).toBe(true)
+        expect(toolBar.firstChild.classList.contains('devicon-atom-original')).toBe(true)
+        expect(getGlyph(toolBar.firstChild)).toBe('e624')
+      it 'using Material Design Icons iconset', ->
+        jasmine.attachToDOM(toolBar)
+        toolBarAPI.addButton
+          icon: 'material-ui'
+          callback: 'application:about'
+          iconset: 'mdi'
+        expect(toolBar.firstChild.classList.contains('mdi')).toBe(true)
+        expect(toolBar.firstChild.classList.contains('mdi-material-ui')).toBe(true)
+        expect(getGlyph(toolBar.firstChild)).toBe('f449')
+
       it 'and disabling it', ->
         button = toolBarAPI.addButton
           icon: 'octoface'
           callback: 'application:about'
-          tooltip: 'About Atom'
         button.setEnabled(false)
         expect(toolBar.children.length).toBe(1)
         expect(toolBar.firstChild.classList.contains('disabled')).toBe(true)
-      it 'clicking button', ->
+
+      it 'clicking button with command callback', ->
+        button = toolBarAPI.addButton
+          icon: 'octoface'
+          callback: 'application:about'
+        jasmine.attachToDOM(toolBar)
+        atom.commands.onWillDispatch spy = jasmine.createSpy()
+        toolBar.firstChild.click()
+        expect(spy).toHaveBeenCalled()
+        expect(spy.mostRecentCall.args[0].type).toEqual('application:about')
+      it 'clicking button with function callback', ->
+        button = toolBarAPI.addButton
+          icon: 'octoface'
+          callback: spy = jasmine.createSpy()
+        jasmine.attachToDOM(toolBar)
+        toolBar.firstChild.click()
+        expect(spy).toHaveBeenCalled()
+      it 'clicking button with function callback containing data', ->
+        button = toolBarAPI.addButton
+          icon: 'octoface'
+          callback: spy = jasmine.createSpy()
+          data: 'foo'
+        toolBar.firstChild.click()
+        expect(spy).toHaveBeenCalled()
+        expect(spy.mostRecentCall.args[0]).toEqual('foo')
+      it 'and restores focus after click', ->
         toolBarAPI.addButton
           icon: 'octoface'
           callback: 'editor:select-line'
           tooltip: 'Select line'
-        jasmine.attachToDOM(toolBar)
         previouslyFocusedElement = document.activeElement
-        toolBar.children[0].dispatchEvent(new Event('mouseover'))
-        toolBar.children[0].focus()
-        toolBar.children[0].click()
+        toolBar.firstChild.dispatchEvent(new Event('mouseover'))
+        toolBar.firstChild.focus()
+        toolBar.firstChild.click()
         expect(document.activeElement).toBe(previouslyFocusedElement)
+
+      describe 'by clicking', ->
+        describe 'with modifiers', ->
+          describe 'and command callback', ->
+            spy = null
+            beforeEach ->
+              toolBarAPI.addButton
+                icon: 'octoface'
+                callback:
+                  '': 'tool-bar:modifier-default'
+                  'alt': 'tool-bar:modifier-alt'
+                  'ctrl': 'tool-bar:modifier-ctrl'
+                  'shift': 'tool-bar:modifier-shift'
+                  'shift+alt': 'tool-bar:modifier-shift-alt' # Shouldn't execute
+                  'alt+shift': 'tool-bar:modifier-alt-shift' # Last added, should execute
+                  'ctrl+shift': 'tool-bar:modifier-ctrl-shift'
+                  # 'alt+ctrl': 'tool-bar:modifier-alt-ctrl' # Undefined should return default
+                  'alt ctrl-shift': 'tool-bar:modifier-alt-ctrl-shift' # Use any seperator
+                jasmine.attachToDOM(toolBar)
+                atom.commands.onWillDispatch spy = jasmine.createSpy()
+            it 'works without modifiers', ->
+              toolBar.firstChild.dispatchEvent(buildClickEvent())
+              expect(spy).toHaveBeenCalled()
+              expect(spy.mostRecentCall.args[0].type).toEqual('tool-bar:modifier-default')
+            it 'works with alt key', ->
+              toolBar.firstChild.dispatchEvent(buildClickEvent(altKey: true))
+              expect(spy).toHaveBeenCalled()
+              expect(spy.mostRecentCall.args[0].type).toEqual('tool-bar:modifier-alt')
+            it 'works with ctrl key', ->
+              toolBar.firstChild.dispatchEvent(buildClickEvent(ctrlKey: true))
+              expect(spy).toHaveBeenCalled()
+              expect(spy.mostRecentCall.args[0].type).toEqual('tool-bar:modifier-ctrl')
+            it 'works with shift key', ->
+              toolBar.firstChild.dispatchEvent(buildClickEvent(shiftKey: true))
+              expect(spy).toHaveBeenCalled()
+              expect(spy.mostRecentCall.args[0].type).toEqual('tool-bar:modifier-shift')
+            it 'works with alt & shift key', ->
+              toolBar.firstChild.dispatchEvent(buildClickEvent({altKey: true, shiftKey: true}))
+              expect(spy).toHaveBeenCalled()
+              expect(spy.mostRecentCall.args[0].type).toEqual('tool-bar:modifier-alt-shift')
+            it 'works with ctrl & shift key', ->
+              toolBar.firstChild.dispatchEvent(buildClickEvent({ctrlKey: true, shiftKey: true}))
+              expect(spy).toHaveBeenCalled()
+              expect(spy.mostRecentCall.args[0].type).toEqual('tool-bar:modifier-ctrl-shift')
+            it 'works with alt & ctrl & shift key', ->
+              toolBar.firstChild.dispatchEvent(buildClickEvent({altKey: true, ctrlKey: true, shiftKey: true}))
+              expect(spy).toHaveBeenCalled()
+              expect(spy.mostRecentCall.args[0].type).toEqual('tool-bar:modifier-alt-ctrl-shift')
+            it 'works when modifier callback isn\'t defined', ->
+              toolBar.firstChild.dispatchEvent(buildClickEvent({altKey: true, ctrlKey: true}))
+              expect(spy).toHaveBeenCalled()
+              expect(spy.mostRecentCall.args[0].type).toEqual('tool-bar:modifier-default')
+            it 'works with last defined modifiers when there are duplicates', ->
+              toolBar.firstChild.dispatchEvent(buildClickEvent({altKey: true, shiftKey: true}))
+              expect(spy).toHaveBeenCalled()
+              expect(spy.mostRecentCall.args[0].type).toEqual('tool-bar:modifier-alt-shift')
+            it 'works with any seperator between modifiers', ->
+              toolBar.firstChild.dispatchEvent(buildClickEvent({altKey: true, ctrlKey: true, shiftKey: true}))
+              expect(spy).toHaveBeenCalled()
+              expect(spy.mostRecentCall.args[0].type).toEqual('tool-bar:modifier-alt-ctrl-shift')
+          describe 'and function callback', ->
+            it 'executes', ->
+              button = toolBarAPI.addButton
+                icon: 'octoface'
+                callback:
+                  '': 'tool-bar:modifier-default'
+                  'alt': spy = jasmine.createSpy()
+              jasmine.attachToDOM(toolBar)
+              toolBar.firstChild.dispatchEvent(buildClickEvent(altKey: true))
+              expect(spy).toHaveBeenCalled()
+            it 'executes with data', ->
+              button = toolBarAPI.addButton
+                icon: 'octoface'
+                callback:
+                  '': 'tool-bar:modifier-default'
+                  'alt': spy = jasmine.createSpy()
+                data: 'foo'
+              toolBar.firstChild.dispatchEvent(buildClickEvent(altKey: true))
+              expect(spy).toHaveBeenCalled()
+              expect(spy.mostRecentCall.args[0]).toEqual('foo')
 
     describe 'which can add a spacer', ->
       [toolBar] = []

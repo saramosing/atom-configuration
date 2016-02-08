@@ -1,8 +1,7 @@
 # Atom Tool Bar
 
-[![Join the chat at https://gitter.im/suda/tool-bar](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/suda/tool-bar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-![](https://travis-ci.org/suda/tool-bar.svg)
+[![Build Status](https://travis-ci.org/suda/tool-bar.svg?branch=master)](https://travis-ci.org/suda/tool-bar)
+[![Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/suda/tool-bar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This package provides extensible tool bar for Atom.
 
@@ -117,21 +116,40 @@ consumeToolBar: (toolBar) ->
     tooltip: 'Show Alert'
     data: 'foo'
 
+  # Callback with modifiers
+  @toolBar.addButton
+    icon: 'octoface',
+    callback:
+      '': 'application:cmd-1'  # Without modifiers is default action
+      'alt': 'application:cmd-2'
+      'ctrl': 'application:cmd-3'
+      'shift': (data) -> console.log data  # With function callback
+      'alt+shift': 'application:cmd-5'  # Multiple modifiers
+      'alt+ctrl+shift': 'application:cmd-6'  # All modifiers      
+    data: 'foo'
+
   # Adding spacer and button at the beginning of the tool bar
   @toolBar.addSpacer priority: 10
   @toolBar.addButton
     icon: 'octoface'
     callback: 'application:about'
     priority: 10
+
+  # Cleaning up when tool bar is deactivated
+  @toolBar.onDidDestroy ->
+    @toolBar = null
+    # Teardown any stateful code that depends on tool bar ...
 ```
 
-The method `addButton` requires an object with at least the properties `icon` and `callback`.
+The method `addButton` requires an object with at least the properties `icon` and `callback`. The `icon` can be any icon from the `iconset`. The `callback` must be an Atom command string, an custom callback function or an object where the keys are key modifiers (`alt`, `ctrl` or `shift`) and the values are commands or custom function.
 
 The remaining properties `tooltip` (default is no tooltip), `iconset` (defaults `Octicons`), `data` and `priority` (defaults `50`) are optional.
 
 The method `addSpacer` has only one optional property `priority` (defaults `50`).
 
-Use the method `removeItems` to remove the buttons added by your package. This is particulair useful in your package `deactivate` method, but can be used at any time.
+Use the method `removeItems` to remove the buttons added by your package. This is particular useful in your package `deactivate` method, but can be used at any time.
+
+The `onDidDestroy` method takes a function that will be called when the `tool-bar` package is destroyed. This is useful if your package needs to do some cleanup when the `tool-bar` is deactivated but your package continues running.
 
 ## Supported icon sets
 
@@ -141,6 +159,7 @@ Use the method `removeItems` to remove the buttons added by your package. This i
 * [Foundation](http://zurb.com/playground/foundation-icon-fonts-3) (`fi`)
 * [IcoMoon](https://icomoon.io) (`icomoon`)
 * [Devicon](http://devicon.fr) (`devicon`)
+* [MaterialDesignIcons v1.4.57](https://materialdesignicons.com/) (`mdi`)
 
 ## Supported commands
 
@@ -154,6 +173,7 @@ Use the method `removeItems` to remove the buttons added by your package. This i
 
 * [Wojtek Siudzinski](http://suda.pl)
 * [Jeroen van Warmerdam](https://github.com/jerone)
+* [Ryo Narita](https://github.com/cakecatz)
 
 ## Contributors
 
@@ -161,7 +181,7 @@ Issues and pull requests are very welcome. Feel free to write your own packages 
 For all contributions credits are due:
 
 * [Pascal Bihler](https://github.com/pbihler)
-* [Ryo Narita](https://github.com/cakecatz)
 * [Nikita Gusakov](https://github.com/nkt)
 * Carlos Santos
 * [Daniel Alejandro Cast](https://github.com/lexcast)
+* [James Coyle](https://github.com/JamesCoyle)
